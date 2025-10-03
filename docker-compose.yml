@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  privacy-analyzer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: privacy-analyzer:latest
+    container_name: privacy-analyzer
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - MAX_WORKERS=${MAX_WORKERS:-4}
+    volumes:
+      # Mount data directory for input files
+      - ./data:/data
+      # Mount output directory for results
+      - ./output:/output
+      # Mount config (optional)
+      - ./config:/app/config:ro
+    command: ["--help"]
+
+  # Optional: Database for future features
+  postgres:
+    image: postgres:15-alpine
+    container_name: privacy-analyzer-db
+    environment:
+      - POSTGRES_USER=privacy
+      - POSTGRES_PASSWORD=privacy
+      - POSTGRES_DB=privacy_analyzer
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    profiles:
+      - database
+
+volumes:
+  postgres_data:

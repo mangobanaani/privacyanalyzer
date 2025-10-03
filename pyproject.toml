@@ -1,0 +1,147 @@
+[tool.poetry]
+name = "privacy-analyzer"
+version = "0.1.0"
+description = "Privacy analyzer for PII detection and GDPR compliance"
+authors = ["Privacy Analyzer Contributors"]
+readme = "README.md"
+license = "MIT"
+homepage = "https://github.com/yourusername/privacy-analyzer"
+repository = "https://github.com/yourusername/privacy-analyzer"
+keywords = ["privacy", "gdpr", "pii", "compliance", "security"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+presidio-analyzer = "^2.2.0"
+presidio-anonymizer = "^2.2.0"
+spacy = "^3.7.0"
+anthropic = "^0.18.0"
+PyYAML = "^6.0.0"
+pytesseract = "^0.3.10"
+pdf2image = "^1.17.0"
+PyMuPDF = "^1.23.0"
+python-docx = "^1.1.0"
+openpyxl = "^3.1.0"
+Pillow = "^10.2.0"
+extract-msg = {version = "^0.41.0", optional = true}
+requests = "^2.31.0"
+beautifulsoup4 = "^4.12.0"
+playwright = {version = "^1.41.0", optional = true}
+lxml = "^5.1.0"
+SQLAlchemy = "^2.0.0"
+psycopg2-binary = {version = "^2.9.9", optional = true}
+pymysql = {version = "^1.1.0", optional = true}
+pyodbc = {version = "^5.0.0", optional = true}
+pandas = "^2.2.0"
+pydantic = "^2.6.0"
+pydantic-settings = "^2.1.0"
+python-dotenv = "^1.0.0"
+loguru = "^0.7.0"
+rich = "^13.7.0"
+typer = "^0.9.0"
+jinja2 = "^3.1.0"
+matplotlib = {version = "^3.8.0", optional = true}
+seaborn = {version = "^0.13.0", optional = true}
+fastapi = {version = "^0.109.0", optional = true}
+uvicorn = {version = "^0.27.0", optional = true}
+click = "<8.2"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+pytest-asyncio = "^0.23.0"
+pytest-cov = "^4.1.0"
+black = "^24.1.0"
+ruff = "^0.2.0"
+mypy = "^1.8.0"
+python-multipart = "^0.0.20"
+
+[tool.poetry.extras]
+email = ["extract-msg"]
+web = ["playwright"]
+database = ["psycopg2-binary", "pymysql", "pyodbc"]
+reporting = ["matplotlib", "seaborn"]
+api = ["fastapi", "uvicorn"]
+all = ["extract-msg", "playwright", "psycopg2-binary", "pymysql", "pyodbc", "matplotlib", "seaborn", "fastapi", "uvicorn"]
+
+[tool.poetry.scripts]
+privacy-analyzer = "src.cli.main:app"
+privacy-analyzer-server = "src.api.server:run_server"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 100
+target-version = ['py310', 'py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  \.eggs
+  | \.git
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501",  # line too long (handled by black)
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+]
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "-ra -q --strict-markers"
+markers = [
+    "slow: marks tests as slow",
+    "integration: marks tests as integration tests",
+]
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*", "**/__pycache__/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]

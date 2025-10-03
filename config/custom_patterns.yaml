@@ -1,0 +1,186 @@
+# Custom PII Detection Patterns
+# Add organization-specific patterns for PII detection
+
+patterns:
+  # Employee ID patterns
+  - name: "EMPLOYEE_ID"
+    description: "Employee identification numbers"
+    regex: "EMP-\\d{6}"
+    severity: "medium"
+    confidence: 0.85
+    gdpr_articles:
+      - "Art. 6"
+      - "Art. 32"
+
+  # Customer ID patterns
+  - name: "CUSTOMER_ID"
+    description: "Customer identification numbers"
+    regex: "CUST-[A-Z]{2}\\d{8}"
+    severity: "medium"
+    confidence: 0.85
+    gdpr_articles:
+      - "Art. 6"
+
+  # Internal reference numbers
+  - name: "REFERENCE_NUMBER"
+    description: "Internal reference numbers"
+    regex: "REF-\\d{10}"
+    severity: "low"
+    confidence: 0.75
+
+  # Tax identification numbers (generic format)
+  - name: "TAX_ID"
+    description: "Tax identification numbers"
+    regex: "\\b\\d{2}-\\d{7}\\b"
+    severity: "high"
+    confidence: 0.80
+    gdpr_articles:
+      - "Art. 9"
+
+  # Insurance policy numbers
+  - name: "INSURANCE_POLICY"
+    description: "Insurance policy numbers"
+    regex: "POL-\\d{8,10}"
+    severity: "medium"
+    confidence: 0.80
+
+  # Vehicle identification numbers
+  - name: "VIN"
+    description: "Vehicle Identification Numbers"
+    regex: "\\b[A-HJ-NPR-Z0-9]{17}\\b"
+    severity: "low"
+    confidence: 0.75
+
+  # Bank account patterns (generic)
+  - name: "BANK_ACCOUNT"
+    description: "Bank account numbers"
+    regex: "\\b\\d{8,18}\\b"
+    severity: "critical"
+    confidence: 0.70
+    gdpr_articles:
+      - "Art. 9"
+      - "Art. 32"
+
+  # Passport numbers (generic)
+  - name: "PASSPORT"
+    description: "Passport numbers"
+    regex: "[A-Z]{1,2}\\d{6,9}"
+    severity: "critical"
+    confidence: 0.80
+    gdpr_articles:
+      - "Art. 9"
+
+  # Health insurance numbers
+  - name: "HEALTH_INSURANCE"
+    description: "Health insurance identification"
+    regex: "HI-\\d{9,12}"
+    severity: "critical"
+    confidence: 0.85
+    gdpr_articles:
+      - "Art. 9"
+
+  # Membership numbers
+  - name: "MEMBERSHIP_NUMBER"
+    description: "Membership identification numbers"
+    regex: "MEM-\\d{6,10}"
+    severity: "low"
+    confidence: 0.75
+
+  # API Keys and Tokens
+  - name: "API_KEY"
+    description: "API keys and authentication tokens"
+    regex: "(?i)(api[_-]?key|token)[\\s:=\"']+([a-zA-Z0-9_\\-]{20,})"
+    severity: "critical"
+    confidence: 0.90
+
+  # AWS Access Keys
+  - name: "AWS_ACCESS_KEY"
+    description: "AWS access key identifiers"
+    regex: "AKIA[0-9A-Z]{16}"
+    severity: "critical"
+    confidence: 0.95
+
+  # Private keys
+  - name: "PRIVATE_KEY"
+    description: "Private cryptographic keys"
+    regex: "-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----"
+    severity: "critical"
+    confidence: 1.0
+
+# Context-based patterns
+# These require surrounding context to identify PII
+
+context_patterns:
+  - name: "SALARY_INFORMATION"
+    description: "Salary and compensation data"
+    keywords:
+      - "salary"
+      - "compensation"
+      - "wage"
+      - "earnings"
+      - "income"
+    severity: "high"
+    confidence: 0.70
+    gdpr_articles:
+      - "Art. 6"
+
+  - name: "PERFORMANCE_REVIEW"
+    description: "Performance review data"
+    keywords:
+      - "performance review"
+      - "evaluation"
+      - "rating"
+      - "assessment"
+    severity: "medium"
+    confidence: 0.70
+
+  - name: "MEDICAL_INFORMATION"
+    description: "Medical and health data"
+    keywords:
+      - "diagnosis"
+      - "treatment"
+      - "prescription"
+      - "medical history"
+      - "condition"
+      - "symptoms"
+    severity: "critical"
+    confidence: 0.75
+    gdpr_articles:
+      - "Art. 9"
+
+  - name: "BIOMETRIC_DATA"
+    description: "Biometric information"
+    keywords:
+      - "fingerprint"
+      - "facial recognition"
+      - "retina scan"
+      - "biometric"
+      - "dna"
+    severity: "critical"
+    confidence: 0.80
+    gdpr_articles:
+      - "Art. 9"
+
+  - name: "CRIMINAL_RECORD"
+    description: "Criminal history information"
+    keywords:
+      - "conviction"
+      - "criminal record"
+      - "offense"
+      - "arrest"
+      - "sentence"
+    severity: "critical"
+    confidence: 0.75
+    gdpr_articles:
+      - "Art. 9"
+
+  - name: "POLITICAL_OPINION"
+    description: "Political opinions and affiliations"
+    keywords:
+      - "political party"
+      - "political affiliation"
+      - "voting record"
+    severity: "high"
+    confidence: 0.70
+    gdpr_articles:
+      - "Art. 9"

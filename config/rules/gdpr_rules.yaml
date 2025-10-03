@@ -1,0 +1,202 @@
+version: "1.0"
+description: "GDPR compliance rules for privacy analysis"
+
+rules:
+  - id: "gdpr_art5_data_minimization"
+    name: "Data Minimization"
+    article: "Art. 5(1)(c)"
+    description: "Personal data shall be adequate, relevant and limited to what is necessary"
+    severity: "high"
+    conditions:
+      pii_types:
+        - "SSN"
+        - "CREDIT_CARD"
+        - "PASSPORT"
+      contexts:
+        - "public_website"
+        - "non_essential_storage"
+    recommendation: "Remove or minimize collection of this data. Document necessity for processing."
+
+  - id: "gdpr_art5_storage_limitation"
+    name: "Storage Limitation"
+    article: "Art. 5(1)(e)"
+    description: "Data kept for no longer than necessary"
+    severity: "medium"
+    conditions:
+      any_pii: true
+    recommendation: "Implement data retention policies. Document retention periods. Auto-delete expired data."
+
+  - id: "gdpr_art6_lawful_basis"
+    name: "Lawful Basis"
+    article: "Art. 6"
+    description: "Processing must have lawful basis"
+    severity: "high"
+    conditions:
+      any_pii: true
+    recommendation: "Document lawful basis (consent, contract, legal obligation, etc.). Maintain records of processing activities."
+
+  - id: "gdpr_art7_consent"
+    name: "Consent Requirements"
+    article: "Art. 7"
+    description: "Consent must be freely given, specific, informed and unambiguous"
+    severity: "high"
+    conditions:
+      source_types:
+        - "web"
+      pii_types:
+        - "EMAIL"
+        - "PHONE_NUMBER"
+    recommendation: "Implement clear consent mechanism. Provide easy withdrawal. Document consent records."
+
+  - id: "gdpr_art9_special_categories"
+    name: "Special Category Data"
+    article: "Art. 9"
+    description: "Extra protection for sensitive personal data"
+    severity: "critical"
+    conditions:
+      pii_types:
+        - "SSN"
+        - "MEDICAL_LICENSE"
+        - "DATE_OF_BIRTH"  # Can reveal age
+    recommendation: "Ensure explicit consent or other Art. 9(2) condition. Implement enhanced security. Document necessity."
+
+  - id: "gdpr_art12_transparency"
+    name: "Transparent Information"
+    article: "Art. 12"
+    description: "Information must be concise, transparent, intelligible and easily accessible"
+    severity: "medium"
+    conditions:
+      source_types:
+        - "web"
+      checks:
+        - "missing_privacy_policy"
+    recommendation: "Provide clear privacy notice. Use plain language. Make easily accessible."
+
+  - id: "gdpr_art13_information_provision"
+    name: "Information at Collection"
+    article: "Art. 13"
+    description: "Must inform data subjects at time of collection"
+    severity: "high"
+    conditions:
+      source_types:
+        - "web"
+      contexts:
+        - "form_collection"
+    recommendation: "Provide information about: identity, purposes, legal basis, retention, rights. Include at point of collection."
+
+  - id: "gdpr_art15_access_right"
+    name: "Right of Access"
+    article: "Art. 15"
+    description: "Data subjects have right to access their data"
+    severity: "medium"
+    conditions:
+      any_pii: true
+    recommendation: "Implement data access request process. Respond within 30 days. Provide data in structured format."
+
+  - id: "gdpr_art17_erasure"
+    name: "Right to Erasure"
+    article: "Art. 17"
+    description: "Right to be forgotten in certain circumstances"
+    severity: "medium"
+    conditions:
+      any_pii: true
+    recommendation: "Implement deletion mechanism. Handle erasure requests. Document any legal reasons for retention."
+
+  - id: "gdpr_art25_data_protection_by_design"
+    name: "Data Protection by Design"
+    article: "Art. 25"
+    description: "Privacy must be built into systems"
+    severity: "high"
+    conditions:
+      any_pii: true
+    recommendation: "Implement privacy by design. Use pseudonymization. Minimize data collection. Default to privacy-protective settings."
+
+  - id: "gdpr_art32_security"
+    name: "Security of Processing"
+    article: "Art. 32"
+    description: "Appropriate technical and organizational measures"
+    severity: "critical"
+    conditions:
+      checks:
+        - "missing_https"
+        - "insecure_cookie"
+        - "missing_encryption"
+    recommendation: "Implement encryption in transit and at rest. Use HTTPS. Secure cookies. Regular security testing."
+
+  - id: "gdpr_art33_breach_notification"
+    name: "Breach Notification"
+    article: "Art. 33"
+    description: "Must notify supervisory authority within 72 hours"
+    severity: "high"
+    conditions:
+      any_pii: true
+    recommendation: "Establish breach detection and response procedures. Maintain incident response plan. Document breach notification process."
+
+  - id: "gdpr_art35_dpia"
+    name: "Data Protection Impact Assessment"
+    article: "Art. 35"
+    description: "DPIA required for high-risk processing"
+    severity: "high"
+    conditions:
+      pii_types:
+        - "SSN"
+        - "CREDIT_CARD"
+        - "MEDICAL_LICENSE"
+      threshold_count: 100
+    recommendation: "Conduct DPIA for high-risk processing. Document assessment. Consult DPO if appointed."
+
+cookies:
+  - id: "cookie_consent"
+    name: "Cookie Consent"
+    article: "Art. 6, ePrivacy Directive"
+    severity: "high"
+    cookie_types:
+      - "analytics"
+      - "advertising"
+    recommendation: "Obtain prior consent for non-essential cookies. Implement cookie banner. Allow granular consent."
+
+  - id: "cookie_security"
+    name: "Cookie Security Flags"
+    article: "Art. 32"
+    severity: "medium"
+    checks:
+      - "missing_secure_flag"
+      - "missing_httponly"
+      - "missing_samesite"
+    recommendation: "Set Secure flag for all cookies. Use HttpOnly for session cookies. Implement SameSite attribute."
+
+web_security:
+  - id: "https_required"
+    name: "HTTPS Required"
+    article: "Art. 32"
+    severity: "critical"
+    checks:
+      - "http_not_https"
+    recommendation: "Implement HTTPS site-wide. Obtain valid SSL/TLS certificate. Redirect HTTP to HTTPS."
+
+  - id: "security_headers"
+    name: "Security Headers"
+    article: "Art. 32"
+    severity: "medium"
+    checks:
+      - "missing_hsts"
+      - "missing_csp"
+      - "missing_x_frame_options"
+    recommendation: "Implement security headers: HSTS, CSP, X-Frame-Options, X-Content-Type-Options."
+
+forms:
+  - id: "form_pii_collection"
+    name: "Form PII Collection"
+    article: "Art. 13"
+    severity: "high"
+    checks:
+      - "form_collects_pii"
+    recommendation: "Provide privacy notice at point of collection. Ensure lawful basis. Implement data minimization."
+
+  - id: "form_security"
+    name: "Form Security"
+    article: "Art. 32"
+    severity: "critical"
+    checks:
+      - "form_not_https"
+    recommendation: "Use HTTPS for all forms. Implement CSRF protection. Validate input server-side."

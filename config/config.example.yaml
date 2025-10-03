@@ -1,0 +1,114 @@
+# Privacy Analyzer Configuration
+
+# Logging
+logging:
+  level: INFO  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: null  # Set to path for file logging, null for console only
+
+# API Keys (can also be set via environment variables)
+api_keys:
+  anthropic: null  # Set ANTHROPIC_API_KEY env var or specify here
+
+# PII Detection
+detection:
+  # Confidence threshold for PII detection (0.0 - 1.0)
+  confidence_threshold: 0.6
+
+  # Language model for spaCy NER
+  spacy_model: "en_core_web_lg"
+
+  # Custom PII patterns
+  custom_patterns:
+    enabled: true
+    patterns_file: "config/custom_patterns.yaml"
+
+# LLM Configuration
+llm:
+  enabled: false  # Enable LLM-powered analysis
+  model: "claude-3-5-sonnet-20241022"
+  max_tokens: 4000
+  temperature: 0.0
+
+  # Retry configuration
+  max_retries: 3
+  retry_delay: 1.0
+
+# Document Processing
+document:
+  # OCR settings
+  ocr:
+    enabled: true
+    language: "eng"
+    dpi: 300
+
+  # Supported file types
+  supported_extensions:
+    - .pdf
+    - .docx
+    - .doc
+    - .txt
+    - .png
+    - .jpg
+    - .jpeg
+    - .tiff
+    - .xlsx
+    - .xls
+    - .eml
+    - .msg
+
+# Batch Processing
+batch:
+  max_workers: 4
+  recursive: true
+
+# Web Scanning
+web:
+  user_agent: "PrivacyAnalyzer/1.0"
+  timeout: 10
+  follow_links: true
+  max_pages: 10
+  respect_robots_txt: true
+
+# GDPR Compliance
+gdpr:
+  rules_file: "config/rules/gdpr_rules.yaml"
+
+  # Compliance scoring weights
+  scoring:
+    critical_weight: 10.0
+    high_weight: 5.0
+    medium_weight: 2.0
+    low_weight: 1.0
+
+# Reporting
+reporting:
+  # Default output formats
+  formats:
+    - html
+    - json
+
+  # Redact PII in reports
+  redact_pii: true
+
+  # Include detailed findings
+  include_details: true
+
+  # HTML report styling
+  html:
+    theme: "default"  # default, dark, minimal
+
+  # PDF generation
+  pdf:
+    engine: "wkhtmltopdf"  # wkhtmltopdf or weasyprint
+    page_size: "A4"
+
+# Database Scanning (future feature)
+database:
+  enabled: false
+  max_rows_sample: 1000
+
+# Anonymization (future feature)
+anonymization:
+  enabled: false
+  default_strategy: "mask"  # mask, hash, generalize, suppress

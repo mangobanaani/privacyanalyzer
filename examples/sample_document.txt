@@ -1,0 +1,42 @@
+CONFIDENTIAL EMPLOYEE RECORD
+
+Employee Information:
+Name: John Smith
+Employee ID: EMP-123456
+Date of Birth: 1985-03-15
+Social Security Number: 123-45-6789
+Email: john.smith@example.com
+Phone: (555) 123-4567
+
+Address:
+123 Main Street
+Springfield, IL 62701
+
+Employment Details:
+Position: Senior Software Engineer
+Department: Engineering
+Start Date: 2020-01-15
+Salary: $125,000/year
+
+Emergency Contact:
+Name: Jane Smith
+Relationship: Spouse
+Phone: (555) 987-6543
+
+Medical Information:
+Health Insurance Policy: HI-987654321
+Doctor: Dr. Michael Johnson
+Known Conditions: Allergies to penicillin
+
+Performance Review 2023:
+Rating: Excellent
+Manager Notes: John has consistently exceeded expectations in his role.
+Key achievements include leading the migration project and mentoring junior developers.
+
+Banking Information:
+Bank: First National Bank
+Account Number: 1234567890
+Routing Number: 987654321
+
+This document contains sensitive personal information and should be handled according to
+company privacy policies and applicable GDPR regulations.
